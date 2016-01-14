@@ -1,0 +1,21 @@
+{
+    "name": "five-say/laravel-model-ext-trait",
+    "description": "基于 trait 的 laravel 模型特性拓展：自动注册模型观察者；创建与更新数据前，自动校验请求数据。",
+    "keywords": ["model", "observer", "validate"],
+    "authors": [
+        {
+            "name": "FiveSay",
+            "email": "bcw.5@foxmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "laravel/framework": "~5.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "FiveSay\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
