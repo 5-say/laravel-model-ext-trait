@@ -1,4 +1,5 @@
 <?php
+
 namespace FiveSay\Trait\Laravel\Model;
 
 /*
