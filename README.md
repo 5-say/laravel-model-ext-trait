@@ -18,7 +18,7 @@
 ```php
 <?php
 
-use FiveSay\Trait\Laravel\Model\ExtTrait;
+use FiveSay\Laravel\Model\ExtTrait;
 
 class User
 {

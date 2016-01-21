@@ -1,6 +1,6 @@
 <?php
 
-namespace FiveSay\Trait\Laravel\Model;
+namespace FiveSay\Laravel\Model;
 
 /*
 |--------------------------------------------------------------------------
