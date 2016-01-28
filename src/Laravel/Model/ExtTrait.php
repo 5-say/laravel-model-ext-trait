@@ -20,6 +20,12 @@ trait ExtTrait
     use ValidatesRequests;
 
     /**
+     * 数据校验规则
+     * @var array
+     */
+    public $rules = [];
+
+    /**
      * Check if the model needs to be booted and if so, do it.
      *
      * @return void
