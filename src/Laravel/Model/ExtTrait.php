@@ -23,7 +23,7 @@ trait ExtTrait
      * 数据校验规则
      * @var array
      */
-    public $rules = [];
+    // public $rules = [];
 
     /**
      * Check if the model needs to be booted and if so, do it.
@@ -33,7 +33,7 @@ trait ExtTrait
     protected function bootIfNotBooted()
     {
         $this->registerObserve();
-        $this->registerValidater();
+        empty($this->rules) OR $this->registerValidater();
         parent::bootIfNotBooted();
     }
 
