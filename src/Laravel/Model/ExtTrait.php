@@ -26,15 +26,14 @@ trait ExtTrait
     // public $rules = [];
 
     /**
-     * Check if the model needs to be booted and if so, do it.
+     * boot this trait
      *
      * @return void
      */
-    protected function bootIfNotBooted()
+    public static function bootExtTrait()
     {
-        $this->registerObserve();
-        empty($this->rules) OR $this->registerValidater();
-        parent::bootIfNotBooted();
+        self::registerObserve();
+        self::registerValidater();
     }
 
     /**
@@ -42,13 +41,18 @@ trait ExtTrait
      *
      * @return void
      */
-    private function registerObserve()
+    private static function registerObserve()
     {
-        $className = 'Observer\\'.get_called_class();
+        $className        = 'Observer\\'.get_called_class();
+        $observableEvents = [
+            'creating', 'created', 'updating', 'updated',
+            'deleting', 'deleted', 'saving', 'saved',
+            'restoring', 'restored',
+        ];
 
         if (class_exists($className)) {
             $priority = 0;
-            foreach ($this->getObservableEvents() as $event) {
+            foreach ($observableEvents as $event) {
                 if (method_exists($className, $event)) {
                     static::registerModelEvent($event, $className.'@'.$event, $priority);
                 }
@@ -61,7 +65,7 @@ trait ExtTrait
      *
      * @return void
      */
-    private function registerValidater()
+    private static function registerValidater()
     {
         // 提高优先级，确保在模型观察者之前执行
         $priority = 1;
@@ -69,11 +73,12 @@ trait ExtTrait
         // 创建数据前
         static::registerModelEvent('creating', function ($model) {
 
-            $rules      = [];
-            $messages   = [];
+            if (! $model->rules) return;
 
             // 针对所有数据进行校验
             $modelRules = $model->rules;
+            $rules      = [];
+            $messages   = [];
 
             foreach ($modelRules as $key => $value) {
                 // 构造验证规则
@@ -94,11 +99,12 @@ trait ExtTrait
         // 更新数据前
         static::registerModelEvent('updating', function ($model) {
 
-            $rules      = [];
-            $messages   = [];
+            if (! $model->rules) return;
 
             // 仅针对脏数据进行校验
             $modelRules = array_intersect_key($model->rules, $model->getDirty());
+            $rules      = [];
+            $messages   = [];
 
             foreach ($modelRules as $key => $value) {
                 // 构造验证规则
