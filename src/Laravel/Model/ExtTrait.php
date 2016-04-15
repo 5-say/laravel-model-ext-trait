@@ -92,6 +92,7 @@ trait ExtTrait
             }
 
             // 对请求的数据进行校验
+            request()->merge($model->attributes);
             $model->validate(request(), $rules, $messages);
             
         }, $priority);
@@ -118,6 +119,7 @@ trait ExtTrait
             }
 
             // 对请求的数据进行校验
+            request()->merge($model->attributes);
             $model->validate(request(), $rules, $messages);
 
         }, $priority);
