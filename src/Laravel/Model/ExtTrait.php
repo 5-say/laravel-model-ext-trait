@@ -127,5 +127,57 @@ trait ExtTrait
         }, $priority);
     }
     
+    /**
+     * 移除指定的验证规则
+     * @param  string $ruleStr 规则名称字符串（例如：password.read_only）
+     * @param  string $event   事件名称（creating 或 updating）
+     * @return void
+     */
+    public function removeRule($ruleStr, $event)
+    {
+        $ruleArr = explode('.', $ruleStr);
+
+        // 提高优先级，确保在数据校验之前执行
+        $priority = 2;
+
+        static::registerModelEvent($event, function ($model) use ($ruleArr) {
+            switch (count($ruleArr)) {
+                case 1:
+                    unset($model->rules[$ruleArr[0]]);
+                    break;
+                
+                case 2:
+                    unset($model->rules[$ruleArr[0]][$ruleArr[1]]);
+                    break;
+            }
+        }, $priority);
+    }
+    
+    /**
+     * 变更指定的验证规则
+     * @param  string $ruleStr 规则名称字符串（例如：password.read_only）
+     * @param  mixed  $value   具体赋值
+     * @param  string $event   事件名称（creating 或 updating）
+     * @return void
+     */
+    public function changeRule($ruleStr, $value, $event)
+    {
+        $ruleArr = explode('.', $ruleStr);
+
+        // 提高优先级，确保在数据校验之前执行
+        $priority = 2;
+
+        static::registerModelEvent($event, function ($model) use ($ruleArr, $value) {
+            switch (count($ruleArr)) {
+                case 1:
+                    $model->rules[$ruleArr[0]] = $value;
+                    break;
+                
+                case 2:
+                    $model->rules[$ruleArr[0]][$ruleArr[1]] = $value;
+                    break;
+            }
+        }, $priority);
+    }
 
 }
